@@ -6,7 +6,7 @@ namespace WareHouseApplication.Model.Configuration
     {
         public void Configure(EntityTypeBuilder<Pallet> builder)
         {
-            builder.ToTable("PalletConfiguration");
+            builder.ToTable("Pallet");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).UseIdentityColumn();
         }
