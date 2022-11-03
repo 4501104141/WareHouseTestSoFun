@@ -18,9 +18,9 @@ namespace WareHouseApplication.Controllers
             _dbcontext = _a;
         }
         [HttpGet]
-        public List<Category> GetProducts()
-        {
-            return _dbcontext.Categories.ToList();
+        public IActionResult GetCategory()
+        { 
+            return Ok(_dbcontext.Categories.ToList());
         }
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
@@ -40,6 +40,23 @@ namespace WareHouseApplication.Controllers
             });
             _dbcontext.SaveChanges();
             return Ok();
+        }
+        [HttpPut("{id}")]
+        public IActionResult Edit(int id, string Name1, int SortOrder1, Status Status1)
+        {
+            try
+            {
+                var category = _dbcontext.Categories.Find(id);
+                if(category == null) { return NotFound(); }
+                category.Name = Name1;
+                category.SortOrder = SortOrder1;
+                category.Status = Status1;
+                _dbcontext.SaveChanges();
+                return Ok(category.Name);
+            }catch
+            {
+                return BadRequest();
+            }
         }
         [HttpDelete]
         public IActionResult Delete(int id)
