@@ -8,6 +8,7 @@ namespace WareHouseApplication.Model.Configuration
         {
             builder.ToTable("ProductInPallets");
             builder.HasKey(t => new { t.ProductId, t.PalletId });
+            builder.Property(t => t.Quantity).IsRequired();
             builder.HasOne(t => t.Pallet).WithMany(pc => pc.ProductInPallets)
                 .HasForeignKey(pc => pc.PalletId);
             builder.HasOne(t => t.Product).WithMany(pc => pc.ProductInPallets)

@@ -30,22 +30,13 @@ namespace WareHouseApplication.Controllers
             return Ok(a);
         }
         [HttpPost]
-        //public int Id { get; set; }
-        //public int TransferId { get; set; }
-        //public int ProductId { get; set; }
-        //public int Quantity { get; set; }
-        //public int Price { get; set; }
-        //public Transfer Transfer { get; set; }
-        //public Product Product { get; set; }
         public IActionResult Create (int TransferId, int ProductId,
             int Quantity)
         {
             try
             {
-                var a = _dbcontext.Products.Find(ProductId);
-                int GiaThanh = a.Cost;
-                int GiaTong;
-                int SoLuong = a.Quantity;
+                var Product= _dbcontext.Products.Find(ProductId);
+                int GiaThanh = Product.Cost; int GiaTong; int SoLuong = Product.Quantity;
                 if(Quantity > SoLuong) { return Content("Het hang"); }
                 GiaTong = Quantity * GiaThanh;
                 var transferDetail = new TransfersDetail
@@ -56,6 +47,15 @@ namespace WareHouseApplication.Controllers
                     Price = GiaTong,
                 };
                 _dbcontext.TransfersDetails.Add(transferDetail);
+                _dbcontext.SaveChanges();
+
+                var Transfer = _dbcontext.Transfers.Find(TransferId);
+                //
+                if(Transfer.Status == TransferStatus.Done)
+                {
+                    Product.Quantity -= Quantity;
+                }
+                //
                 _dbcontext.SaveChanges();
                 return Ok("Succes");
             }catch
@@ -69,10 +69,10 @@ namespace WareHouseApplication.Controllers
         {
             try
             {
-                var a = _dbcontext.Products.Find(ProductId);
-                int GiaThanh = a.Cost;
+                var Product = _dbcontext.Products.Find(ProductId);
+                int GiaThanh = Product.Cost;
                 int GiaTong;
-                int SoLuong = a.Quantity;
+                int SoLuong = Product.Quantity;
                 if (Quantity > SoLuong) { return Content("Het hang"); }
                 GiaTong = Quantity * GiaThanh;
                 var transferDetail = _dbcontext.TransfersDetails.Find(id);
@@ -80,6 +80,13 @@ namespace WareHouseApplication.Controllers
                 transferDetail.ProductId = ProductId;
                 transferDetail.Quantity = Quantity;
                 transferDetail.Price = GiaTong;
+                _dbcontext.SaveChanges();
+
+                var Transfer = _dbcontext.Transfers.Find(TransferId);
+                if (Transfer.Status == TransferStatus.Done)
+                {
+                    Product.Quantity -= Quantity;
+                }
                 _dbcontext.SaveChanges();
                 return Ok("Succes");
             }

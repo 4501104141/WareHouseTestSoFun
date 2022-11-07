@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using WareHouseApplication.Enum;
 using WareHouseApplication.Model;
@@ -32,7 +33,7 @@ namespace WareHouseApplication.Controllers
             return Ok(a);
         }
         [HttpPost]
-        public IActionResult Create(int ContactId, int OperationTypeID, string Notes, TransferStatus status)
+        public IActionResult Create(int ContactId, int OperationTypeID, string Notes)
         {
             try
             {
@@ -42,7 +43,7 @@ namespace WareHouseApplication.Controllers
                     OperationTypeID = OperationTypeID,
                     Notes = Notes,
                     DateCreated = DateTime.Now,
-                    Status = status
+                    Status = TransferStatus.NotDone
                 };
                 _dbcontext.Transfers.Add(a);
                 _dbcontext.SaveChanges();
@@ -64,6 +65,30 @@ namespace WareHouseApplication.Controllers
                 transfer.OperationTypeID = OperationTypeID;
                 transfer.Notes = Notes;
                 transfer.Status = status;
+                if(status == TransferStatus.Done)
+                {
+                    if(transfer.OperationTypeID == 1)
+                    {
+                        foreach (TransfersDetail i in _dbcontext.TransfersDetails)
+                        {
+                            if( i.TransferId == id)
+                            {
+                                var Product = _dbcontext.Products.Find(i.ProductId);
+                                Product.Cost += i.Quantity;
+                            }
+                        }
+                    }else
+                    {
+                        foreach (TransfersDetail i in _dbcontext.TransfersDetails)
+                        {
+                            if (i.TransferId == id)
+                            {
+                                var Product = _dbcontext.Products.Find(i.ProductId);
+                                Product.Cost -= i.Quantity;
+                            }
+                        }
+                    }
+                }
                 _dbcontext.SaveChanges();
                 return Ok("Succes");
             }
