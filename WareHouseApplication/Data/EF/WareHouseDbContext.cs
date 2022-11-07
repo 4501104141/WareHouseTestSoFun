@@ -33,6 +33,8 @@ namespace WareHouseApplication.Model.EF
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Transfer> Transfers { get; set; }
         public DbSet<TransfersDetail> TransfersDetails { get; set; }
+        public DbSet<NguoiDung> NguoiDungs { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 
 }
