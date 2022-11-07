@@ -6,11 +6,11 @@ using WareHouseApplication.Model.EF;
 
 namespace WareHouseApplication.Service
 {
-    public class Service : IService
+    public class Services : IServices
     {
         private readonly WareHouseDbContext _dbcontext;
         public static int PAGE_SIZE { get; set; } = 5;
-        public Service(WareHouseDbContext dbcontext)
+        public Services(WareHouseDbContext dbcontext)
         {
             _dbcontext = dbcontext;
         }

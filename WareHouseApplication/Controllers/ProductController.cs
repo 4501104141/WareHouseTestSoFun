@@ -14,8 +14,8 @@ namespace WareHouseApplication.Controllers
     public class ProductController : ControllerBase
     {
         private readonly WareHouseDbContext _dbcontext;
-        private readonly IService _service;
-        public ProductController(WareHouseDbContext _a, IService service)
+        private readonly IServices _service;
+        public ProductController(WareHouseDbContext _a, IServices service)
         {
             _dbcontext = _a;
             _service = service;
