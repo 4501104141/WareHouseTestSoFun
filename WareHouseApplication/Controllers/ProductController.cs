@@ -26,11 +26,11 @@ namespace WareHouseApplication.Controllers
         //    return Ok(_dbcontext.Products.ToList());
         //}
         [HttpGet]
-        public IActionResult GettAllProducts(string search, double? from, double? to, string sortBy, int page = 1)
+        public IActionResult GettAllProducts(string search, double? from, double? to, string sortBy, int page = 1, int PAGE_SIZE = 5)
         {
             try
             {
-                var result = _service.GetAll(search, from, to, sortBy, page);
+                var result = _service.GetAll(search, from, to, sortBy, page, PAGE_SIZE);
                 return Ok(result);
             }
             catch

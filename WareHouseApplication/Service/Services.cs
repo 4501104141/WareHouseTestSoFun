@@ -9,13 +9,13 @@ namespace WareHouseApplication.Service
     public class Services : IServices
     {
         private readonly WareHouseDbContext _dbcontext;
-        public static int PAGE_SIZE { get; set; } = 5;
+        //public static int PAGE_SIZE { get; set; } = 5;
         public Services(WareHouseDbContext dbcontext)
         {
             _dbcontext = dbcontext;
         }
 
-        public List<Product> GetAll(string search, double? from, double? to, string sortBy, int page = 1)
+        public List<Product> GetAll(string search, double? from, double? to, string sortBy, int page = 1, int PAGE_SIZE = 5)
         {
             var allProducts = _dbcontext.Products.AsQueryable();
 
@@ -66,7 +66,7 @@ namespace WareHouseApplication.Service
 
             var result = PaginatedList<Product>.Create(allProducts, page, PAGE_SIZE);
 
-            return result.Select(hh=>new Product()).ToList();
+            return result.ToList();
         }
     }
 }
